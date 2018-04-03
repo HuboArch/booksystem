@@ -1,0 +1,9 @@
+# Created by .ignore support plugin (hsz.mobi)
+
+.idea
+out/
+mvc/mvc.iml
+/mvc/web/WEB-INF/classes
+/mvc/web/WEB-INF/lib
+
+showMVC.iml
