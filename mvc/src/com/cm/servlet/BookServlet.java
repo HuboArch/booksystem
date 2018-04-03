@@ -1,7 +1,9 @@
 package com.cm.servlet;
 
 import com.cm.dao.BookDao;
+import com.cm.dao.CategoryDao;
 import com.cm.entity.Book;
+import com.cm.entity.Category;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -14,6 +16,7 @@ import java.util.List;
 @WebServlet("/book")
 public class BookServlet extends HttpServlet {
     private BookDao bookDao = new BookDao();
+    private CategoryDao categoryDao = new CategoryDao();
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
@@ -28,7 +31,10 @@ public class BookServlet extends HttpServlet {
     private void list(HttpServletRequest req, HttpServletResponse resp) {
 
         List<Book> list = bookDao.getAll();
+        List<Category> categories = categoryDao.getAllCategories();
+
         req.setAttribute("list", list);
+        req.setAttribute("cList", categories);
 
         try {
             req.getRequestDispatcher("list.jsp").forward(req, resp);

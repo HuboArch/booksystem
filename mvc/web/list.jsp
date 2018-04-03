@@ -16,7 +16,7 @@
     <script src="assets/semantic.min.js"></script>
 </head>
 <body>
-<div class="ui stacked segment">
+<div class="ui segment padded">
 
     <table class="ui celled table">
         <thead>
@@ -25,8 +25,8 @@
             <th>书名</th>
             <th>价格</th>
             <th>作者</th>
-            <th>出版日期</th>
             <th>所属类别</th>
+            <th>出版日期</th>
             <th>数据操作</th>
         </tr>
         </thead>
@@ -37,15 +37,19 @@
             <td>${bean.getName()}</td>
             <td>${bean.getPrice()}</td>
             <td>${bean.getAuthor()}</td>
-            <td>${bean.getPubDate()}</td>
-            <td>${bean.getCategoryId()}</td>
             <td>
-                <div class="ui button">
-                    <a href="book?op=getById&id=${bean.getId()}">修改</a>
+                <div class="ui tag label">
+                    <c:forEach items="${cList}" var="category">
+                        <c:if test="${bean.getCategoryId()==category.getId()}">
+                            ${category.getName()}
+                        </c:if>
+                    </c:forEach>
                 </div>
-                <div class="ui button">
-                    <a class="ui white" href="book?op=delete&id=${bean.getId()}">删除</a>
-                </div>
+            </td>
+            <td>${bean.getPubDate()}</td>
+            <td>
+                <a class="ui label teal" href="book?op=getById&id=${bean.getId()}">修改</a>
+                <a class="ui label red" href="book?op=delete&id=${bean.getId()}">删除</a>
             </td>
         </tr>
         </c:forEach>
