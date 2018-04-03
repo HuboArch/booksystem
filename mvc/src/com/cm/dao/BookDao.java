@@ -87,4 +87,10 @@ public class BookDao extends BaseDao {
         );
     }
 
+    // 删除单行数据
+    public int delete(int id) {
+        String sql = "delete from book where id=?";
+
+        return executeUpdate(sql, id);
+    }
 }

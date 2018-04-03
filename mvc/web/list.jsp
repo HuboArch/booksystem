@@ -38,13 +38,13 @@
             <td>${bean.getPrice()}</td>
             <td>${bean.getAuthor()}</td>
             <td>
-                <div class="ui tag label">
-                    <c:forEach items="${cList}" var="category">
-                        <c:if test="${bean.getCategoryId()==category.getId()}">
-                            ${category.getName()}
-                        </c:if>
-                    </c:forEach>
-                </div>
+                <c:forEach items="${cList}" var="category">
+                    <c:if test="${bean.getCategoryId()==category.getId()}">
+                        <div class="${"ui tag label"}">
+                                ${category.getName()}
+                        </div>
+                    </c:if>
+                </c:forEach>
             </td>
             <td>${bean.getPubDate()}</td>
             <td>

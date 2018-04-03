@@ -1,3 +1,4 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%--
   Created by IntelliJ IDEA.
   User: dean
@@ -21,7 +22,7 @@
 </head>
 <body>
 
-<div class="ui centered orange card" id="card">
+<div class="ui padded centered card" id="card">
 
     <div class="content">
         <div class="header">
@@ -33,26 +34,41 @@
     </div>
 
     <div class="content">
-        <form class="ui form" action="addServlet">
+        <form class="ui form" action="book?op=add" method="post">
             <div class="field">
-                <label>书名</label>
-                <input type="text" name="name">
+                <div class="ui labeled input">
+                    <label for="name" class="ui label">书名</label>
+                    <input type="text" placeholder="book name..." id="name" name="name">
+                </div>
             </div>
             <div class="field">
-                <label>价格</label>
-                <input type="text" name="price">
+                <div class="ui labeled input">
+                    <label class="ui label" for="price">价格</label>
+                    <input type="text" id="price" placeholder="book price..." name="price">
+                    <div class="ui basic label">.00</div>
+                </div>
             </div>
             <div class="field">
-                <label>作者</label>
-                <input type="text" name="author">
+                <div class="ui labeled input">
+                    <label class="ui label" for="author">作者</label>
+                    <input type="text" name="author" id="author" placeholder="author of the book...">
+                </div>
             </div>
             <div class="field">
-                <label>出版日期</label>
-                <input type="text" name="pubDate">
+                <div class="ui labeled input">
+                    <label class="ui label" for="select">类型</label>
+                    <select class="ui selection" name="categoryId" id="select">
+                        <c:forEach items="${cList}" var="category">
+                            <option value="${category.getId()}">${category.getName()}</option>
+                        </c:forEach>
+                    </select>
+                </div>
             </div>
             <div class="field">
-                <label>所属类别</label>
-                <input type="text" name="categoryId">
+                <div class="ui labeled input">
+                    <label for="date" class="ui label">日期</label>
+                    <input type="text" name="pubDate" id="date" placeholder="publish date of the book...">
+                </div>
             </div>
 
             <button class="right floated ui button primary" type="submit">提交</button>
