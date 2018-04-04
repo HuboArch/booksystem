@@ -62,10 +62,10 @@ public class BookServlet extends HttpServlet {
         }
     }
 
-    private static Book createBook(HttpServletRequest req, boolean withId) {
+    private static Book createBook(HttpServletRequest req, boolean isIdIncluded) {
 
         int id = 0;
-        if (withId) {
+        if (isIdIncluded) {
             id = validateId(req);
         }
         String bookName = req.getParameter("name");
@@ -79,7 +79,7 @@ public class BookServlet extends HttpServlet {
         }
         int categoryId = Integer.parseInt(req.getParameter("categoryId"));
 
-        return withId ? new Book(id, bookName, price, author, pubDate, categoryId) :
+        return isIdIncluded ? new Book(id, bookName, price, author, pubDate, categoryId) :
                 new Book(bookName, price, author, pubDate, categoryId);
     }
 
