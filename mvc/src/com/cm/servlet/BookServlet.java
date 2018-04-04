@@ -49,13 +49,26 @@ public class BookServlet extends HttpServlet {
         }
     }
 
-    private void getById(HttpServletRequest req, HttpServletResponse resp) {
+    private int validateId(HttpServletRequest req) {
+        return req.getParameter("id") != null
+                ? Integer.parseInt(req.getParameter("id"))
+                : 0;
+    }
 
+    private void getById(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 
+        int id = validateId(req);
+        Book book = bookDao.getByID(id);
+        List<Category> categoryList = categoryDao.getAllCategories();
+
+        req.setAttribute("book", book);
+        req.setAttribute("cList", categoryList);
+
+        req.getRequestDispatcher("update.jsp").forward(req, resp);
     }
 
     private void delete(HttpServletRequest req, HttpServletResponse resp) throws IOException {
-        int id = req.getParameter("id") == null ? 0 : Integer.parseInt(req.getParameter("id"));
+        int id = validateId(req);
 
         if (bookDao.delete(id) > 0) {
             resp.sendRedirect("book?op=list");
