@@ -38,7 +38,6 @@ public class UpdateServlet extends HttpServlet {
         int categoryId = Integer.parseInt(req.getParameter("categoryId"));
 
         Book b = new Book(id, bookName, price, author, pubDate, categoryId);
-        System.out.println(b.getId());
 
         if (bookDao.update(b) > 0) {
             resp.sendRedirect("list");

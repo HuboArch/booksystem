@@ -26,6 +26,7 @@ public class BookServlet extends HttpServlet {
 
         req.setCharacterEncoding("UTF-8");
         resp.setCharacterEncoding("UTF-8");
+        resp.setContentType("text/plain;charset=utf-8");
 
         /*
          * op=list    展示全部图书数据
@@ -46,10 +47,43 @@ public class BookServlet extends HttpServlet {
             delete(req, resp);
         } else if ("getById".equals(action)) {
             getById(req, resp);
+        } else if ("update".equals(action)) {
+            update(req, resp);
         }
     }
 
-    private int validateId(HttpServletRequest req) {
+    private void update(HttpServletRequest req, HttpServletResponse resp) throws IOException {
+        Book b = createBook(req, true);
+
+        if (bookDao.update(b) > 0) {
+            resp.sendRedirect("book?op=list");
+        } else {
+            resp.getWriter().print("修改失败");
+        }
+    }
+
+    private static Book createBook(HttpServletRequest req, boolean withId) {
+
+        int id = 0;
+        if (withId) {
+            id = validateId(req);
+        }
+        String bookName = req.getParameter("name");
+        double price = Double.parseDouble(req.getParameter("price"));
+        String author = req.getParameter("author");
+        Date pubDate = null;
+        try {
+            pubDate = new SimpleDateFormat("yyyy-MM-dd").parse(req.getParameter("pubDate"));
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        int categoryId = Integer.parseInt(req.getParameter("categoryId"));
+
+        return withId ? new Book(id, bookName, price, author, pubDate, categoryId) :
+                new Book(bookName, price, author, pubDate, categoryId);
+    }
+
+    private static int validateId(HttpServletRequest req) {
         return req.getParameter("id") != null
                 ? Integer.parseInt(req.getParameter("id"))
                 : 0;
@@ -77,33 +111,14 @@ public class BookServlet extends HttpServlet {
         }
     }
 
-    private void add(HttpServletRequest req, HttpServletResponse resp) {
+    private void add(HttpServletRequest req, HttpServletResponse resp) throws IOException {
 
-        String name = req.getParameter("name");
-        int price = Integer.parseInt(req.getParameter("price"));
-        String author = req.getParameter("author");
-        int categoryId = Integer.parseInt(req.getParameter("categoryId"));
-        Date date = null;
-        try {
-            date = new SimpleDateFormat("yyyy-MM-dd").parse(req.getParameter("pubDate"));
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
+        Book b = createBook(req, false);
 
-        Book book = new Book(name, price, author, date, categoryId);
-
-        if (bookDao.add(book) > 0) {
-            try {
-                resp.sendRedirect("book?op=list");
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+        if ((bookDao.add(b) > 0)) {
+            resp.sendRedirect("book?op=list");
         } else {
-            try {
-                resp.getWriter().print("添加失败");
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+            resp.getWriter().print("添加失败");
         }
     }
 
